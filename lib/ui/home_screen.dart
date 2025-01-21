@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_db/cubit/genre_cubit.dart';
 import 'package:movie_db/cubit/popular_cubit.dart';
 import 'package:movie_db/models/popular_movie.dart';
 import 'package:movie_db/ui/detail_card.dart';
@@ -18,6 +19,8 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     context.read<PopularCubit>().getPopularMovie();
+    context.read<NowPlayingCubit>().getNowPlayingMovie();
+    context.read<GenreCubit>().getGenre();
     super.initState();
   }
 
@@ -115,7 +118,7 @@ class _HomePageState extends State<HomePage> {
             const Text(
               'Now Playing',
               style: TextStyle(
-                color: Colors.white,
+                color: Colors.grey,
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
@@ -124,36 +127,43 @@ class _HomePageState extends State<HomePage> {
             // now playing
             SizedBox(
               height: 250,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.only(right: 16.0),
-                    child: BlocBuilder<NowPlayingCubit, NowPlayingState>(builder: (_, state) {
-                      if (state is NowPlayingMovieLoaded) {
-                        List<NowPlaying> movie = state.nowPlaying;
-
-                        return SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            children:
-                            movie
-                                .take(7)
-                                .map((e) => CardMovie(name: e.title!, image: e.image!))
-                                .toList() +
-                                [],
-                          ),
+              child:
+              BlocBuilder<NowPlayingCubit, NowPlayingState>(
+                builder: (_, state) {
+                  if (state is NowPlayingMovieLoaded) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else if (state is NowPlayingMovieLoaded) {
+                    List<Result> results = state.nowPlaying[0].results;
+                    return ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: results.length,
+                      itemBuilder: (context, index) {
+                        var e = results[index];
+                        return CardMovie(
+                          name: e.title,
+                          image: e.backdropPath,
+                          rating: e.voteAverage,
+                          onTap: () {
+                            // Aksi ketika film ditekan
+                          },
                         );
-                      } else {
-                        return Container(
-                          child: Text("NTTTT"),
-                        );
-                      }
-                    }),
-                  );
+                      },
+                    );
+                  } else if (state is NowPlayingMovieLoadingFailed) {
+                    return Center(
+                      child: Text('Error: ${state.message}'),
+                    );
+                  } else {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
                 },
               ),
             ),
+
           ],
         ),
       ),

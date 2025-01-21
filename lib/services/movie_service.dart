@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:movie_db/models/genre.dart';
 import 'package:movie_db/models/now_playing.dart';
 import 'package:movie_db/models/people.dart';
 import 'package:movie_db/models/popular_movie.dart';
@@ -72,7 +73,7 @@ class MovieService {
       {int? page, http.Client? client}) async {
     client ??= http.Client();
 
-    String url = "$baseUrl/movie/now_playing?language=en-US&page=${page ?? 1}";
+    String url = "$baseUrl/movie/539972/credits?language=en-US&page=${page ?? 1}";
 
     var response = await client.get(Uri.parse(url), headers: {
       "Authorization": "Bearer $token",
@@ -92,6 +93,34 @@ class MovieService {
 
       return ApiReturnValue(
         value: people,
+      );
+    }
+  }
+
+  static Future<ApiReturnValue<List<Genre>>> getGenre(
+      {int? page, http.Client? client}) async {
+    client ??= http.Client();
+
+    String url = "$baseUrl/genre/movie/list?language=en-US&page=${page ?? 1}";
+
+    var response = await client.get(Uri.parse(url), headers: {
+      "Authorization": "Bearer $token",
+      "Content-Type": "application/json",
+    });
+
+    if (response.statusCode != 200) {
+      return ApiReturnValue(
+        message: "Failed To Fetch The Genre Movie",
+      );
+    } else {
+      var data = jsonDecode(response.body);
+
+      List<Genre> genre = (data["results"] as Iterable)
+          .map((e) => Genre.fromJson(e))
+          .toList();
+
+      return ApiReturnValue(
+        value: genre,
       );
     }
   }
