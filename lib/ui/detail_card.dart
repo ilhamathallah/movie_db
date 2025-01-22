@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:movie_db/models/model.dart';
 
-class DetailPage extends StatelessWidget {
+class DetailPage extends StatefulWidget {
   final String title;
   final String posterPath;
   final String releaseDate;
@@ -17,6 +18,17 @@ class DetailPage extends StatelessWidget {
         required this.genres,
         required this.rating});
 
+  @override
+  State<DetailPage> createState() => _DetailPageState();
+}
+
+class _DetailPageState extends State<DetailPage> {
+  
+  @override
+  void initState() {
+    super.initState();
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,7 +60,7 @@ class DetailPage extends StatelessWidget {
                       bottomRight: Radius.circular(20),
                     ),
                     child: Image.network(
-                      'https://image.tmdb.org/t/p/original/$posterPath',
+                      'https://image.tmdb.org/t/p/original/${widget.posterPath}',
                       fit: BoxFit.cover,
                       width: double.infinity,
                     ),
@@ -76,7 +88,7 @@ class DetailPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        title,
+                        widget.title,
                         style: const TextStyle(
                           fontSize: 26,
                           fontWeight: FontWeight.bold,
@@ -84,40 +96,24 @@ class DetailPage extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        "${rating.toStringAsFixed(1)}",
+                        "${widget.rating.toStringAsFixed(1)}",
                         style: TextStyle(fontSize: 22, fontWeight: FontWeight.w800, color: Color(0xFF3A4E8C)),
                       )
                     ],
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Release Date: $releaseDate',
+                    'Release Date: ${widget.releaseDate}',
                     style: const TextStyle(
                       fontSize: 16,
                       color: Colors.grey,
                     ),
                   ),
                   const SizedBox(height: 16),
-                  // Bagian Genre yang diperbaiki
                   Wrap(
-                    spacing: 8.0,
-                    runSpacing: 4.0,
-                    children: genres
-                        .map((genre) => Chip(
-                      label: Text(
-                        genre,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      backgroundColor: Colors.blueAccent, // Warna yang lebih cerah
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20), // Rounded corners
-                      ),
-                    ))
-                        .toList(),
+                    children: [
+                      Text('Genres: ${widget.genres.where((g) => widget.genres.contains(g)).toList()}'),
+                    ],
                   ),
                   const SizedBox(height: 20),
                   const Text(
@@ -130,7 +126,7 @@ class DetailPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    overview,
+                    widget.overview,
                     style: const TextStyle(
                       fontSize: 16,
                       color: Colors.blueGrey,

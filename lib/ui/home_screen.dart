@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_db/cubit/genre_cubit.dart';
 import 'package:movie_db/cubit/popular_cubit.dart';
+import 'package:movie_db/models/model.dart';
 import 'package:movie_db/models/popular_movie.dart';
 import 'package:movie_db/ui/detail_card.dart';
 import 'package:movie_db/ui/widgets/popular_card.dart';
@@ -98,8 +99,8 @@ class _HomePageState extends State<HomePage> {
                                 posterPath: e.image!,
                                 overview: e.overview!,
                                 releaseDate: e.release!,
-                                genres: e.genre!,
                                 rating: e.rating!.toDouble(),
+                                genres: e.genre ?? [],
                               ),
                             ),
                           );

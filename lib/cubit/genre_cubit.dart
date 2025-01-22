@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:movie_db/models/api_return_value.dart';
-import 'package:movie_db/models/genre.dart';
 import 'package:movie_db/services/movie_service.dart';
+import 'package:movie_db/models/model.dart';
 
 part 'genre_state.dart';
 

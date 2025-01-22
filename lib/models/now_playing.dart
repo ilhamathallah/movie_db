@@ -1,6 +1,5 @@
-import 'package:equatable/equatable.dart';
-
 import 'dart:convert';
+
 
 NowPlaying nowPlayingFromJson(String str) => NowPlaying.fromJson(json.decode(str));
 

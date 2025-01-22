@@ -1,45 +1,16 @@
-// To parse this JSON data, do
-//
-//     final genreMovie = genreMovieFromJson(jsonString);
+part of 'model.dart';
 
-import 'dart:convert';
+class Genre extends Equatable {
+  final int id;
+  final String name;
 
-GenreMovie genreMovieFromJson(String str) => GenreMovie.fromJson(json.decode(str));
+  const Genre({required this.id, required this.name});
 
-String genreMovieToJson(GenreMovie data) => json.encode(data.toJson());
-
-class GenreMovie {
-  List<Genre> genres;
-
-  GenreMovie({
-    required this.genres,
-  });
-
-  factory GenreMovie.fromJson(Map<String, dynamic> json) => GenreMovie(
-    genres: List<Genre>.from(json["genres"].map((x) => Genre.fromJson(x))),
+  factory Genre.fromJson(Map<String, dynamic> data) => Genre(
+    id: data["id"],
+    name: data['name'],
   );
 
-  Map<String, dynamic> toJson() => {
-    "genres": List<dynamic>.from(genres.map((x) => x.toJson())),
-  };
-}
-
-class Genre {
-  int id;
-  String name;
-
-  Genre({
-    required this.id,
-    required this.name,
-  });
-
-  factory Genre.fromJson(Map<String, dynamic> json) => Genre(
-    id: json["id"],
-    name: json["name"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "name": name,
-  };
+  @override
+  List<Object?> get props => [id, name];
 }

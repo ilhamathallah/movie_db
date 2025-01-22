@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:movie_db/models/genre.dart';
+import 'package:movie_db/models/model.dart';
 import 'package:movie_db/models/now_playing.dart';
 import 'package:movie_db/models/people.dart';
 import 'package:movie_db/models/popular_movie.dart';
